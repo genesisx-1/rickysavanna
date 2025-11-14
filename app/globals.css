@@ -1,0 +1,93 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-[#fafafa] text-[#111111];
+    font-family: Georgia, "Times New Roman", Times, serif;
+    font-size: 18px;
+    line-height: 1.7;
+  }
+  
+  h1 {
+    @apply text-4xl font-bold mb-6;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  }
+  
+  h2 {
+    @apply text-3xl font-bold mb-4 mt-8;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  }
+  
+  h3 {
+    @apply text-2xl font-bold mb-3 mt-6;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  }
+  
+  p {
+    @apply mb-4;
+  }
+  
+  a {
+    @apply text-link no-underline;
+  }
+  
+  a:hover {
+    @apply text-link-hover underline;
+  }
+  
+  ul, ol {
+    @apply mb-4 pl-6;
+  }
+  
+  li {
+    @apply mb-2;
+  }
+  
+  code {
+    @apply bg-gray-100 px-1.5 py-0.5 rounded text-sm font-mono;
+  }
+  
+  pre {
+    @apply bg-gray-100 p-4 rounded-lg overflow-x-auto mb-4;
+  }
+  
+  pre code {
+    @apply bg-transparent p-0 text-sm;
+  }
+  
+  /* Basic syntax highlighting */
+  .hljs {
+    @apply bg-gray-100;
+  }
+  
+  .hljs-keyword {
+    @apply text-purple-600;
+  }
+  
+  .hljs-string {
+    @apply text-green-600;
+  }
+  
+  .hljs-comment {
+    @apply text-gray-500 italic;
+  }
+  
+  .hljs-function {
+    @apply text-blue-600;
+  }
+  
+  .hljs-number {
+    @apply text-orange-600;
+  }
+  
+  blockquote {
+    @apply border-l-4 border-gray-300 pl-4 italic my-4;
+  }
+  
+  img {
+    @apply max-w-full h-auto my-4;
+  }
+}
+
