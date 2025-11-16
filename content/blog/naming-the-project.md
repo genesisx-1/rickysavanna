@@ -45,3 +45,5 @@ I'm going to finish polishing PhantomCloudX, then I want to learn about deployme
 
 It's been almost a year since I started learning to code. I've gone from knowing nothing to building a complete application. The progress feels real now.
 
+
+

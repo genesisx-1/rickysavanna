@@ -50,3 +50,5 @@ I'm excited to start new projects and learn new technologies. But I'll always re
 
 I'm grateful for this journey. Learning to code has been challenging but incredibly rewarding. Here's to many more projects to come.
 
+
+

@@ -44,3 +44,5 @@ I'm learning that software development is iterative. You build, use, improve, re
 
 I'm starting to think about my next project. I have ideas, but I want to finish polishing PhantomCloudX first. I want it to be really good before I move on.
 
+
+

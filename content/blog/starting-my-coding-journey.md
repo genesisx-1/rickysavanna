@@ -22,3 +22,5 @@ I'm starting with JavaScript fundamentals - variables, functions, arrays, object
 
 Let's see where this takes me.
 
+
+

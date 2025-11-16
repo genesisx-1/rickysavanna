@@ -38,3 +38,5 @@ Before I can build it, I need to learn:
 
 It's been about 5 months since I started, and I've learned a lot. I can build basic React applications now, which feels like a huge accomplishment. But I know there's still so much more to learn.
 
+
+

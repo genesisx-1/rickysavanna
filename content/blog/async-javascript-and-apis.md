@@ -28,3 +28,5 @@ I'm starting to see how all these pieces fit together. JavaScript fundamentals, 
 
 I want to learn about React next. Everyone seems to use it, and I want to understand what the hype is about.
 
+
+

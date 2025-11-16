@@ -31,3 +31,5 @@ I want to start building small projects to practice what I've learned. Maybe a s
 
 Learning to code is harder than I thought, but also more rewarding. Every time something clicks, it feels like unlocking a new superpower.
 
+
+

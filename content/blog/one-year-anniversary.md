@@ -41,3 +41,5 @@ I'm going to deploy PhantomCloudX soon, then I want to start learning new things
 
 I'm grateful I started this blog. Documenting my journey has kept me accountable and helped me see my progress. Here's to another year of learning and building.
 
+
+

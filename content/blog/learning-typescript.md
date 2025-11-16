@@ -38,3 +38,5 @@ I want to build professional applications, and TypeScript seems to be the standa
 
 I'm going to continue practicing TypeScript while I plan out my trading journal project. I want to build it with TypeScript from the start.
 
+
+

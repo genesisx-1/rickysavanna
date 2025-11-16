@@ -24,3 +24,5 @@ I spent way too long trying to figure out why my event listeners weren't working
 
 I want to learn about async JavaScript and APIs. I see people talking about fetch() and promises everywhere, and I need to understand what that's all about.
 
+
+
