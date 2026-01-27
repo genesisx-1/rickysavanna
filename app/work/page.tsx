@@ -7,40 +7,6 @@ type ProjectWithContentHtml = Awaited<ReturnType<typeof getProjects>>[number] & 
   contentHtml?: string
 }
 
-function getGithubRepoSlug(githubUrl?: string): string | null {
-  if (!githubUrl) return null
-  try {
-    const u = new URL(githubUrl)
-    if (u.hostname !== 'github.com') return null
-    const parts = u.pathname.split('/').filter(Boolean)
-    if (parts.length < 2) return null
-    const owner = parts[0]
-    const repo = parts[1].replace(/\.git$/, '')
-    return `${owner}/${repo}`
-  } catch {
-    return null
-  }
-}
-
-function getProjectPreviewImage(project: { image?: string; url?: string; github?: string }): string | null {
-  // 1) Explicit image from markdown (preferred)
-  if (project.image) return project.image
-
-  // 2) Live site screenshot (works for most public sites)
-  if (project.url) {
-    // thum.io: clean screenshots, no branding
-    const encoded = encodeURIComponent(project.url)
-    return `https://image.thum.io/get/width/1200/crop/900/noanimate/${encoded}`
-  }
-
-  // 3) GitHub Open Graph image (nice preview when no live URL)
-  const repoSlug = getGithubRepoSlug(project.github)
-  if (repoSlug) {
-    return `https://opengraph.githubassets.com/1/${repoSlug}`
-  }
-
-  return null
-}
 
 export default async function WorkPage() {
   const projects = await getProjects()
@@ -99,8 +65,6 @@ export default async function WorkPage() {
                 month: 'long', 
                 day: 'numeric' 
               }) : null;
-
-              const previewImage = getProjectPreviewImage(project)
               
               return (
                 <div key={project.slug} className="mb-8">
@@ -123,23 +87,38 @@ export default async function WorkPage() {
                     />
                   )}
 
-                  {previewImage && (
+                  {(project.url || project.image) && (
                     <div className="my-4">
-                      <Link
-                        href={project.url || project.github || '#'}
-                        target={project.url || project.github ? "_blank" : undefined}
-                        rel={project.url || project.github ? "noopener noreferrer" : undefined}
-                        className="block border border-gray-200 rounded-lg overflow-hidden bg-white hover:border-gray-300 transition-colors"
-                      >
-                        <div className="aspect-[16/9] w-full bg-gray-50">
+                      {project.url ? (
+                        <div className="border border-gray-200 rounded-lg overflow-hidden bg-white">
+                          <div className="aspect-[16/9] w-full bg-gray-50 relative">
+                            <iframe
+                              src={project.url}
+                              className="w-full h-full border-0"
+                              title={`${project.title} preview`}
+                              loading="lazy"
+                              sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+                              style={{ pointerEvents: 'none' }}
+                            />
+                            <Link
+                              href={project.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="absolute inset-0 z-10"
+                              aria-label={`Visit ${project.title}`}
+                            />
+                          </div>
+                        </div>
+                      ) : project.image ? (
+                        <div className="border border-gray-200 rounded-lg overflow-hidden bg-white">
                           <img
-                            src={previewImage}
-                            alt={`${project.title} preview`}
+                            src={project.image}
+                            alt={project.title}
+                            className="w-full h-auto"
                             loading="lazy"
-                            className="w-full h-full object-cover"
                           />
                         </div>
-                      </Link>
+                      ) : null}
                     </div>
                   )}
                 </div>
