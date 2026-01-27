@@ -28,9 +28,9 @@ function getProjectPreviewImage(project: { image?: string; url?: string; github?
 
   // 2) Live site screenshot (works for most public sites)
   if (project.url) {
-    // WordPress mShots: simple, no key required
+    // thum.io: clean screenshots, no branding
     const encoded = encodeURIComponent(project.url)
-    return `https://s0.wp.com/mshots/v1/${encoded}?w=900`
+    return `https://image.thum.io/get/width/1200/crop/900/noanimate/${encoded}`
   }
 
   // 3) GitHub Open Graph image (nice preview when no live URL)
