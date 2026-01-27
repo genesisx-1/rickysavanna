@@ -3,6 +3,45 @@ import { getProjects } from '@/lib/projects'
 import { remark } from 'remark'
 import remarkHtml from 'remark-html'
 
+type ProjectWithContentHtml = Awaited<ReturnType<typeof getProjects>>[number] & {
+  contentHtml?: string
+}
+
+function getGithubRepoSlug(githubUrl?: string): string | null {
+  if (!githubUrl) return null
+  try {
+    const u = new URL(githubUrl)
+    if (u.hostname !== 'github.com') return null
+    const parts = u.pathname.split('/').filter(Boolean)
+    if (parts.length < 2) return null
+    const owner = parts[0]
+    const repo = parts[1].replace(/\.git$/, '')
+    return `${owner}/${repo}`
+  } catch {
+    return null
+  }
+}
+
+function getProjectPreviewImage(project: { image?: string; url?: string; github?: string }): string | null {
+  // 1) Explicit image from markdown (preferred)
+  if (project.image) return project.image
+
+  // 2) Live site screenshot (works for most public sites)
+  if (project.url) {
+    // WordPress mShots: simple, no key required
+    const encoded = encodeURIComponent(project.url)
+    return `https://s0.wp.com/mshots/v1/${encoded}?w=900`
+  }
+
+  // 3) GitHub Open Graph image (nice preview when no live URL)
+  const repoSlug = getGithubRepoSlug(project.github)
+  if (repoSlug) {
+    return `https://opengraph.githubassets.com/1/${repoSlug}`
+  }
+
+  return null
+}
+
 export default async function WorkPage() {
   const projects = await getProjects()
   
@@ -16,7 +55,7 @@ export default async function WorkPage() {
           .process(project.content)
         contentHtml = processedContent.toString()
       }
-      return { ...project, contentHtml }
+      return { ...project, contentHtml } as ProjectWithContentHtml
     })
   )
   
@@ -60,6 +99,8 @@ export default async function WorkPage() {
                 month: 'long', 
                 day: 'numeric' 
               }) : null;
+
+              const previewImage = getProjectPreviewImage(project)
               
               return (
                 <div key={project.slug} className="mb-8">
@@ -75,19 +116,30 @@ export default async function WorkPage() {
                   {formattedDate && (
                     <p className="text-gray-600 mb-4 text-sm">{formattedDate}</p>
                   )}
-                  {(project as any).contentHtml && (
+                  {project.contentHtml && (
                     <div 
                       className="prose prose-lg max-w-none mb-4"
-                      dangerouslySetInnerHTML={{ __html: (project as any).contentHtml }}
+                      dangerouslySetInnerHTML={{ __html: project.contentHtml }}
                     />
                   )}
-                  {project.image && (
+
+                  {previewImage && (
                     <div className="my-4">
-                      <img 
-                        src={project.image} 
-                        alt={project.title}
-                        className="max-w-full h-auto border border-gray-200"
-                      />
+                      <Link
+                        href={project.url || project.github || '#'}
+                        target={project.url || project.github ? "_blank" : undefined}
+                        rel={project.url || project.github ? "noopener noreferrer" : undefined}
+                        className="block border border-gray-200 rounded-lg overflow-hidden bg-white hover:border-gray-300 transition-colors"
+                      >
+                        <div className="aspect-[16/9] w-full bg-gray-50">
+                          <img
+                            src={previewImage}
+                            alt={`${project.title} preview`}
+                            loading="lazy"
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      </Link>
                     </div>
                   )}
                 </div>

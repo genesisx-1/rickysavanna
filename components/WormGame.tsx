@@ -54,7 +54,7 @@ export default function WormGame() {
     
     // Random position on grid, avoiding worm positions
     let attempts = 0
-    let x, y
+    let x: number, y: number
     do {
       x = Math.floor(Math.random() * GRID_SIZE) - GRID_SIZE / 2
       y = Math.floor(Math.random() * GRID_SIZE) - GRID_SIZE / 2
