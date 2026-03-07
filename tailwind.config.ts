@@ -8,20 +8,15 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      colors: {
-        link: '#0066cc',
-        'link-hover': '#004499',
-      },
       maxWidth: {
-        content: '700px',
+        content: '1200px',
+        narrow: '800px',
       },
       fontFamily: {
-        serif: ['Georgia', '"Times New Roman"', 'Times', 'serif'],
-        sans: ['-apple-system', 'BlinkMacSystemFont', '"Helvetica Neue"', 'Arial', 'sans-serif'],
+        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'sans-serif'],
       },
     },
   },
   plugins: [],
 }
 export default config
-
