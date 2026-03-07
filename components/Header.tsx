@@ -5,57 +5,72 @@ import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import ThemeToggle from './ThemeToggle'
 
+const links = [
+  { href: '/', label: 'Home' },
+  { href: '/about', label: 'About' },
+  { href: '/work', label: 'Work' },
+  { href: '/contact', label: 'Contact' },
+]
+
 export default function Header() {
   const pathname = usePathname()
   const [menuOpen, setMenuOpen] = useState(false)
 
-  const links = [
-    { href: '/', label: 'Home' },
-    { href: '/about', label: 'About' },
-    { href: '/work', label: 'Work' },
-    { href: '/contact', label: 'Contact' },
-  ]
-
   return (
     <>
       <header style={{
-        position: 'fixed',
+        position: 'sticky',
         top: 0,
-        left: 0,
-        right: 0,
         zIndex: 50,
-        background: 'var(--bg-primary)',
-        borderBottom: '1px solid var(--border)',
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
-        backgroundColor: 'color-mix(in srgb, var(--bg-primary) 80%, transparent)',
+        background: 'var(--bg-primary)',
+        borderBottom: '1px solid var(--border)',
+        transition: 'background 0.5s ease, border-color 0.5s ease',
       }}>
-        <div className="max-w-content mx-auto px-6 py-4 flex items-center justify-between">
-          <Link href="/" style={{ textDecoration: 'none' }}>
-            <span style={{
-              fontSize: '20px',
-              fontWeight: 800,
-              letterSpacing: '-0.5px',
-            }} className="gradient-text">
-              RS
-            </span>
+        <div className="max-w-content mx-auto px-6" style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          height: '65px',
+        }}>
+          {/* Logo */}
+          <Link href="/" style={{
+            fontSize: '20px',
+            fontWeight: 800,
+            letterSpacing: '-0.5px',
+            textDecoration: 'none',
+            color: 'var(--text-primary)',
+          }}>
+            RS<span style={{ color: 'var(--accent)' }}>.</span>
           </Link>
 
-          <nav className="hidden md:flex items-center gap-8">
+          {/* Desktop Nav */}
+          <nav className="hidden md:flex" style={{ alignItems: 'center', gap: '32px' }}>
             {links.map(link => (
               <Link
                 key={link.href}
                 href={link.href}
                 className={`nav-link ${pathname === link.href ? 'active' : ''}`}
-                style={{ color: pathname === link.href ? 'var(--accent-light)' : undefined }}
+                style={pathname === link.href ? { color: 'var(--accent-light)' } : undefined}
               >
                 {link.label}
               </Link>
             ))}
+            <a
+              href="https://calendly.com/rsvna"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary"
+              style={{ padding: '8px 20px', fontSize: '13px' }}
+            >
+              Book a Call
+            </a>
             <ThemeToggle />
           </nav>
 
-          <div className="flex items-center gap-4 md:hidden">
+          {/* Mobile */}
+          <div className="flex md:hidden" style={{ alignItems: 'center', gap: '16px' }}>
             <ThemeToggle />
             <button
               className={`hamburger ${menuOpen ? 'open' : ''}`}
@@ -70,25 +85,29 @@ export default function Header() {
         </div>
       </header>
 
-      {/* Spacer for fixed header */}
-      <div style={{ height: '65px' }} />
-
-      {/* Mobile menu */}
+      {/* Mobile Menu */}
       <div className={`mobile-menu ${menuOpen ? 'open' : ''}`}>
         {links.map(link => (
           <Link
             key={link.href}
             href={link.href}
             className="nav-link"
-            style={{
-              fontSize: '24px',
-              color: pathname === link.href ? 'var(--accent-light)' : undefined,
-            }}
+            style={{ fontSize: '24px' }}
             onClick={() => setMenuOpen(false)}
           >
             {link.label}
           </Link>
         ))}
+        <a
+          href="https://calendly.com/rsvna"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn-primary"
+          style={{ marginTop: '16px' }}
+          onClick={() => setMenuOpen(false)}
+        >
+          Book a Call
+        </a>
       </div>
     </>
   )
