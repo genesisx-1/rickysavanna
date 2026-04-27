@@ -4,10 +4,10 @@ import { getProjects } from '@/lib/projects'
 import ScrollAnimator from '@/components/ScrollAnimator'
 
 export default async function Home() {
-  const projects = await getProjects()
+  const projects = (await getProjects()).filter(p => p.slug !== 'agent-office')
   const featuredProjects = projects.slice(0, 3)
 
-  const skills = ['JavaScript', 'TypeScript', 'Python', 'React', 'Next.js', 'Django', 'Node.js', 'PostgreSQL', 'Supabase', 'AI/ML', 'Three.js']
+  const skills = ['JavaScript', 'TypeScript', 'Python', 'React', 'Next.js', 'Django', 'Node.js', 'PostgreSQL', 'Supabase', 'Three.js']
 
   return (
     <div>
@@ -17,7 +17,7 @@ export default async function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
               <div className="hero-animate-1">
-                <span className="section-label">Full-Stack Developer & AI Engineer</span>
+                <span className="section-label">Full-Stack Developer</span>
               </div>
 
               <h1 className="hero-animate-2" style={{
@@ -39,7 +39,7 @@ export default async function Home() {
                 maxWidth: '500px',
                 marginBottom: '40px',
               }}>
-                I connect systems, people, and technology. From AI-driven automation
+                I connect systems, people, and technology. From automation pipelines
                 to scalable platforms &mdash; I build software that creates real business impact.
               </p>
 
@@ -89,8 +89,8 @@ export default async function Home() {
               <div style={{ color: 'var(--text-muted)', fontSize: '14px', marginTop: '4px' }}>Years Coding</div>
             </div>
             <div className="stat-card">
-              <div className="stat-number">AI</div>
-              <div style={{ color: 'var(--text-muted)', fontSize: '14px', marginTop: '4px' }}>Focused</div>
+              <div className="stat-number">Full</div>
+              <div style={{ color: 'var(--text-muted)', fontSize: '14px', marginTop: '4px' }}>Stack</div>
             </div>
           </div>
         </div>

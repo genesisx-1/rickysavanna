@@ -1,12 +1,12 @@
 ---
-title: Building LangAI - Exploring Mobile AI
+title: Building LangAI - Exploring Mobile Translation
 date: 2024-12-09
-excerpt: Exploring mobile AI functionality with an AI-powered translation app built in React Native.
+excerpt: Building a mobile translation app with React Native and Expo.
 ---
 
 ## Early Exploration
 
-LangAI was a project exploring mobile AI functionality. I wanted to build something that demonstrated how AI could be useful in a mobile context, and translation seemed like a perfect use case.
+LangAI was a project exploring mobile development. I wanted to build something practical for a mobile context, and translation seemed like a perfect use case.
 
 ## Choosing React Native + Expo
 
@@ -26,9 +26,8 @@ The UI needed to be clean and intuitive. I organized the screens for language in
 
 ## Learning Experience
 
-I never deployed LangAI to production, but it was an important learning experience. It taught me about mobile development, AI integration, and building user-friendly interfaces for AI-powered features. The project is archived, but the experience was valuable for understanding how to approach mobile AI applications.
+I never deployed LangAI to production, but it was an important learning experience. It taught me about mobile development, API integration, and building user-friendly interfaces. The project is archived, but the experience was valuable for understanding how to approach mobile applications.
 
 ## Looking Forward
 
-The lessons from LangAI informed my later mobile projects, particularly around how to structure mobile apps and integrate AI features in a way that feels natural to users.
-
+The lessons from LangAI informed my later mobile projects, particularly around how to structure mobile apps and integrate external services in a way that feels natural to users.

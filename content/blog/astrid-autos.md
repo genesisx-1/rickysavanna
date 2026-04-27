@@ -20,13 +20,12 @@ With the backend in place, I moved to the React/Next.js frontend. I built out th
 
 I implemented a sleek dark theme throughout the application, which required careful attention to color schemes and contrast for readability. The search tools needed to be fast and intuitive, so I optimized the filtering logic and added real-time search suggestions.
 
-## AI Chatbot Integration
+## Automated Messaging Integration
 
-One of the most interesting parts was planning the AI chatbot integration. I wrote a technical plan for using Twilio + OpenAI to enable automated communication between buyers and dealers. This would allow buyers to ask questions about vehicles 24/7, and dealers could respond or have the AI handle common inquiries automatically.
+One of the most interesting parts was planning the automated messaging integration. I wrote a technical plan for using Twilio to enable automated communication between buyers and dealers. This would allow buyers to ask questions about vehicles 24/7, and dealers could respond or have the system handle common inquiries automatically.
 
-The integration required careful API design to ensure the chatbot could access vehicle data and provide accurate information to potential buyers.
+The integration required careful API design to ensure the messaging system could access vehicle data and provide accurate information to potential buyers.
 
 ## Final Steps
 
-After thorough testing and refinement, I deployed the platform. The combination of a solid backend, intuitive frontend, and planned AI integration created a comprehensive solution for the automotive marketplace space.
-
+After thorough testing and refinement, I deployed the platform. The combination of a solid backend, intuitive frontend, and planned messaging integration created a comprehensive solution for the automotive marketplace space.

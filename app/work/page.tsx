@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { getProjects } from '@/lib/projects'
 import { remark } from 'remark'
@@ -24,9 +25,9 @@ export default async function WorkPage() {
     })
   )
 
-  // Find Astrid Platform for featured section
+  // Find Astrid Platform for featured section, filter out agent-office
   const astridPlatform = projectsWithContent.find(p => p.slug === 'astridplatform')
-  const otherProjects = projectsWithContent.filter(p => p.slug !== 'astridplatform')
+  const otherProjects = projectsWithContent.filter(p => p.slug !== 'astridplatform' && p.slug !== 'agent-office')
 
   return (
     <div>
@@ -50,7 +51,7 @@ export default async function WorkPage() {
             fontSize: '18px',
             maxWidth: '600px',
           }}>
-            A collection of projects spanning AI platforms, SaaS tools, mobile apps, and more &mdash; each solving real problems.
+            A collection of projects spanning SaaS tools, mobile apps, and more &mdash; each solving real problems.
           </p>
         </div>
       </section>
@@ -141,16 +142,36 @@ export default async function WorkPage() {
               return (
                 <ScrollAnimator key={project.slug}>
                   <div className="project-card" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-                    {project.url && (
-                      <div className="project-preview">
-                        <iframe
-                          src={project.url}
-                          title={`${project.title} preview`}
-                          loading="lazy"
-                          sandbox="allow-same-origin allow-scripts"
-                        />
-                      </div>
-                    )}
+                    {(() => {
+                      if (project.image) {
+                        return (
+                          <div className="project-preview">
+                            <Image
+                              src={project.image}
+                              alt={`${project.title} preview`}
+                              fill
+                              sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                              style={{ objectFit: 'cover' }}
+                            />
+                          </div>
+                        )
+                      }
+
+                      if (project.url) {
+                        return (
+                          <div className="project-preview">
+                            <iframe
+                              src={project.url}
+                              title={`${project.title} preview`}
+                              loading="lazy"
+                              sandbox="allow-same-origin allow-scripts"
+                            />
+                          </div>
+                        )
+                      }
+
+                      return null
+                    })()}
                     <div style={{ padding: '24px', flex: 1, display: 'flex', flexDirection: 'column' }}>
                       {formattedDate && (
                         <span style={{ color: 'var(--text-muted)', fontSize: '12px', marginBottom: '8px' }}>

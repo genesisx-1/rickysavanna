@@ -7,7 +7,7 @@ export default function AboutPage() {
     { category: 'Languages', items: ['JavaScript', 'TypeScript', 'Python', 'SQL', 'HTML', 'CSS'] },
     { category: 'Frontend', items: ['React', 'Next.js', 'React Native', 'Tailwind CSS', 'Three.js'] },
     { category: 'Backend', items: ['Node.js', 'Express', 'Django', 'REST APIs'] },
-    { category: 'Data & AI', items: ['PostgreSQL', 'Supabase', 'OpenAI', 'Ollama', 'Pandas'] },
+    { category: 'Data & Infrastructure', items: ['PostgreSQL', 'Supabase', 'Redis', 'Pandas'] },
     { category: 'Tools', items: ['Git', 'Railway', 'Netlify', 'Expo', 'Vite'] },
   ]
 
@@ -32,17 +32,17 @@ export default function AboutPage() {
               </h1>
               <div className="hero-animate-3" style={{ color: 'var(--text-secondary)', fontSize: '17px', lineHeight: '1.8' }}>
                 <p style={{ marginBottom: '16px' }}>
-                  I&apos;m a full-stack developer and AI engineer with a background in operations, analytics, and
-                  AI-driven automation. I founded <strong style={{ color: 'var(--text-primary)' }}>Astrid Genesis</strong>,
-                  an AI software company focused on building practical tools for small and medium businesses.
+                  I&apos;m a full-stack developer with a background in operations, analytics, and
+                  automation. I founded <strong style={{ color: 'var(--text-primary)' }}>Astrid Genesis</strong>,
+                  a software company focused on building practical tools for small and medium businesses.
                 </p>
                 <p style={{ marginBottom: '16px' }}>
                   Currently serving as <strong style={{ color: 'var(--text-primary)' }}>Technical Operations Manager &amp; Lead Developer</strong> at
-                  NTX Limo in Dallas, TX &mdash; where I focus on AI productization, backend operations, and automation pipelines.
+                  NTX Limo in Dallas, TX &mdash; where I focus on backend operations, system architecture, and automation pipelines.
                 </p>
                 <p>
                   I connect systems, people, and technology to build software that creates real business impact.
-                  From CRM platforms with AI agents to real-time dispatch systems and creative collaboration tools &mdash;
+                  From CRM platforms to real-time dispatch systems and creative collaboration tools &mdash;
                   I build end-to-end.
                 </p>
               </div>
@@ -109,51 +109,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Education */}
-      <section style={{ padding: '60px 0' }}>
-        <div className="max-w-content mx-auto px-6">
-          <ScrollAnimator>
-            <span className="section-label">Education</span>
-            <h2 style={{ fontSize: '32px', fontWeight: 800, letterSpacing: '-1px', marginBottom: '40px' }}>
-              Background
-            </h2>
-          </ScrollAnimator>
-
-          <ScrollAnimator>
-            <div className="glass-card" style={{ padding: '32px' }}>
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '20px' }}>
-                <div style={{
-                  width: '48px',
-                  height: '48px',
-                  borderRadius: '12px',
-                  background: 'var(--accent-glow)',
-                  border: '1px solid var(--accent)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexShrink: 0,
-                }}>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-light)" strokeWidth="2">
-                    <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
-                    <path d="M6 12v5c0 2 4 3 6 3s6-1 6-3v-5" />
-                  </svg>
-                </div>
-                <div>
-                  <h3 style={{ fontSize: '18px', fontWeight: 700, marginBottom: '4px' }}>
-                    Associate of Applied Science in Cybersecurity
-                  </h3>
-                  <p style={{ color: 'var(--accent-light)', fontSize: '15px', marginBottom: '4px' }}>
-                    Tarrant County College &mdash; Fort Worth, TX
-                  </p>
-                  <p style={{ color: 'var(--text-muted)', fontSize: '14px' }}>
-                    Aug 2022 &ndash; May 2024
-                  </p>
-                </div>
-              </div>
-            </div>
-          </ScrollAnimator>
-        </div>
-      </section>
 
       {/* Experience */}
       <section style={{ padding: '60px 0' }}>
@@ -178,7 +133,7 @@ export default function AboutPage() {
                   Jan 2025 &ndash; Present
                 </p>
                 <p style={{ color: 'var(--text-secondary)', fontSize: '15px', lineHeight: '1.7' }}>
-                  Building dispatch systems, investor CRMs, and automation pipelines. Leading full-stack development with AI integration for fleet management operations.
+                  Building dispatch systems, investor CRMs, and automation pipelines. Leading full-stack development for fleet management operations.
                 </p>
               </div>
             </ScrollAnimator>
@@ -195,7 +150,7 @@ export default function AboutPage() {
                   2024 &ndash; Present
                 </p>
                 <p style={{ color: 'var(--text-secondary)', fontSize: '15px', lineHeight: '1.7' }}>
-                  Founded an AI software company building practical tools for SMBs. Created the Astrid Platform ecosystem including CRM, chat, creative collaboration hub, and automotive marketplace.
+                  Founded a software company building practical tools for SMBs. Created the Astrid Platform ecosystem including CRM, chat, creative collaboration hub, and automotive marketplace.
                 </p>
               </div>
             </ScrollAnimator>

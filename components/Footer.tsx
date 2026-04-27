@@ -15,7 +15,7 @@ export default function Footer() {
               RS<span style={{ color: 'var(--accent)' }}>.</span>
             </div>
             <p style={{ color: 'var(--text-muted)', fontSize: '14px', lineHeight: '1.6' }}>
-              Full-stack developer & AI engineer building intelligent software solutions.
+              Full-stack developer building modern software solutions.
             </p>
           </div>
 

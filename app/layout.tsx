@@ -6,8 +6,8 @@ import ThemeProvider from '@/components/ThemeProvider'
 import ParticleBackground from '@/components/ParticleBackground'
 
 export const metadata: Metadata = {
-  title: 'Ricky Savanna | Full-Stack Developer & AI Engineer',
-  description: 'Full-stack developer specializing in AI-driven automation, scalable platforms, and modern web applications. Founder of Astrid Genesis.',
+  title: 'Ricky Savanna | Full-Stack Developer',
+  description: 'Full-stack developer specializing in automation, scalable platforms, and modern web applications. Founder of Astrid Genesis.',
 }
 
 export default function RootLayout({
