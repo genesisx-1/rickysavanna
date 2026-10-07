@@ -1,68 +1,70 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
-import ScrollAnimator from '@/components/ScrollAnimator'
-import Icon from '@/components/Icon'
+import Reveal from '@/components/Reveal'
 import { profile, experience, education, capabilities, stats } from '@/lib/resume'
 
 export const metadata: Metadata = {
-  title: 'About | Ricky Savanna',
+  title: 'About — Ricky Savanna',
   description:
     'Ricky Savanna — operations, administrative, and IT support professional in Arlington, TX, building production software with agentic coding.',
 }
 
+const Arrow = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+    <path d="M5 12h14M12 5l7 7-7 7" />
+  </svg>
+)
+
 export default function AboutPage() {
   return (
-    <div>
-      <section className="page-hero">
-        <div className="max-w-content mx-auto px-6">
-          <div className="about-grid">
+    <>
+      <section className="hero">
+        <div className="wrap">
+          <div className="hero-grid">
             <div>
-              <div className="hero-animate-1">
-                <span className="section-label">About</span>
+              <div className="hero-status enter-1">
+                <span className="mono">About</span>
               </div>
-              <h1 className="hero-animate-2 page-title">
-                Ricky <span className="gradient-text">Savanna</span>
+              <h1 className="h1 enter-2" style={{ marginBottom: '32px', maxWidth: '14ch' }}>
+                I sit where operations meets engineering.
               </h1>
-              <div className="hero-animate-3 about-copy">
-                <p>{profile.summary}</p>
-                <p>{profile.longSummary}</p>
+              <div className="body-text enter-3" style={{ maxWidth: '58ch' }}>
+                <p style={{ marginTop: 0 }}>{profile.longSummary}</p>
                 <p>
                   I&apos;m the person staff at every level come to when something breaks — and I&apos;m
                   good at explaining technical problems to people who don&apos;t work in tech. That mix is
-                  what makes the software I build actually get used.
+                  why the software I build actually gets used instead of ignored.
                 </p>
               </div>
-
-              <div className="hero-animate-5 hero-actions">
-                <Link href="/resume" className="btn-primary">
-                  Full résumé
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M5 12h14M12 5l7 7-7 7" />
-                  </svg>
-                </Link>
-                <Link href="/contact" className="btn-secondary">Get in touch</Link>
+              <div className="hero-actions enter-4" style={{ marginTop: '36px', marginBottom: 0 }}>
+                <Link href="/resume" className="btn btn-solid">Full résumé <Arrow /></Link>
+                <Link href="/contact" className="btn btn-outline">Get in touch</Link>
               </div>
             </div>
 
-            <div className="hero-animate-4 about-portrait">
-              <div className="gradient-border about-portrait-frame">
+            <div className="hero-visual enter-3" style={{ minHeight: 'auto' }}>
+              <div className="portrait" style={{ width: 'min(380px, 80vw)' }}>
                 <Image
                   src="/images/profile.jpg"
                   alt="Ricky Savanna"
                   width={480}
-                  height={480}
-                  sizes="(max-width: 1024px) 70vw, 440px"
+                  height={600}
+                  sizes="(max-width: 1000px) 80vw, 380px"
                 />
               </div>
             </div>
           </div>
+        </div>
+      </section>
 
-          <div className="hero-animate-5 stat-row">
+      <section style={{ padding: 0 }}>
+        <div className="wrap">
+          <div className="figures">
             {stats.map(s => (
-              <div key={s.label} className="stat-card">
-                <div className="stat-number">{s.value}</div>
-                <div className="stat-label">{s.label}</div>
+              <div key={s.label} className="figure">
+                <div className="figure-value">{s.value}</div>
+                <div className="figure-label">{s.label}</div>
               </div>
             ))}
           </div>
@@ -70,66 +72,64 @@ export default function AboutPage() {
       </section>
 
       <section className="section">
-        <div className="max-w-content mx-auto px-6">
-          <ScrollAnimator>
-            <span className="section-label">What I Do</span>
-            <h2 className="section-title">Two sides of the same job</h2>
-          </ScrollAnimator>
+        <div className="wrap">
+          <Reveal>
+            <div className="section-head">
+              <span className="section-index">01 — Services</span>
+              <div><h2 className="h2">Two sides of the same job.</h2></div>
+            </div>
+          </Reveal>
 
-          <div className="capability-grid">
-            {capabilities.map(cap => (
-              <ScrollAnimator key={cap.title}>
-                <div className="capability-card">
-                  <div className="capability-icon"><Icon name={cap.icon} size={22} /></div>
-                  <h3>{cap.title}</h3>
+          <div className="cap-list">
+            {capabilities.map((cap, i) => (
+              <Reveal key={cap.title} delay={i * 35}>
+                <div className="cap-row">
+                  <span className="cap-num">{String(i + 1).padStart(2, '0')}</span>
+                  <h3 className="h3">{cap.title}</h3>
                   <p>{cap.body}</p>
                 </div>
-              </ScrollAnimator>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
       <section className="section">
-        <div className="max-w-content mx-auto px-6">
-          <ScrollAnimator>
-            <span className="section-label">Experience</span>
-            <h2 className="section-title">Career so far</h2>
-          </ScrollAnimator>
+        <div className="wrap">
+          <Reveal>
+            <div className="section-head">
+              <span className="section-index">02 — Career</span>
+              <div><h2 className="h2">So far.</h2></div>
+            </div>
+          </Reveal>
 
-          <div className="timeline">
+          <div className="exp-list">
             {experience.map(job => (
-              <ScrollAnimator key={`${job.company}-${job.period}`}>
-                <article className="timeline-entry">
-                  <div className="timeline-marker">
-                    <span className={job.current ? 'timeline-dot current' : 'timeline-dot'} />
+              <Reveal key={`${job.company}-${job.period}`}>
+                <article className="exp-item">
+                  <div className="exp-aside">
+                    <span className="exp-period">{job.period}</span>
+                    {job.current && <span className="exp-current">Current</span>}
                   </div>
-                  <div className="timeline-body">
-                    <div className="timeline-head">
-                      <h3>{job.role}</h3>
-                      {job.current && <span className="featured-badge">Current</span>}
-                    </div>
-                    <p className="timeline-company">
-                      {job.company} <span>· {job.location}</span>
-                    </p>
-                    <p className="timeline-period">{job.period}</p>
-                    <p className="timeline-summary">{job.summary}</p>
+                  <div>
+                    <h3 className="exp-role">{job.role}</h3>
+                    <p className="exp-company">{job.company} <span>— {job.location}</span></p>
+                    <p className="exp-summary">{job.summary}</p>
                   </div>
                 </article>
-              </ScrollAnimator>
+              </Reveal>
             ))}
           </div>
 
-          <ScrollAnimator>
-            <div className="glass-card education-card" style={{ marginTop: '40px', maxWidth: '520px' }}>
-              <span className="section-label">Education</span>
-              <h3>{education.school}</h3>
-              <p>{education.degree}</p>
-              <p className="timeline-period">{education.period} · {education.location}</p>
+          <Reveal>
+            <div className="panel" style={{ marginTop: '48px', maxWidth: '520px' }}>
+              <span className="mono">{education.period}</span>
+              <h3 className="h3">{education.school}</h3>
+              <p>{education.degree} — {education.location}</p>
             </div>
-          </ScrollAnimator>
+          </Reveal>
         </div>
       </section>
-    </div>
+    </>
   )
 }

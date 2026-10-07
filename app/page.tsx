@@ -1,123 +1,131 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import ScrollAnimator from '@/components/ScrollAnimator'
+import Reveal from '@/components/Reveal'
 import LiveBrowser from '@/components/LiveBrowser'
-import HeroOrb from '@/components/HeroOrb'
-import Icon from '@/components/Icon'
+import HeroWire from '@/components/HeroWire'
 import { profile, capabilities, skillGroups, stats, experience } from '@/lib/resume'
+
+const Arrow = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+    <path d="M5 12h14M12 5l7 7-7 7" />
+  </svg>
+)
 
 export default function Home() {
   const current = experience[0]
 
   return (
-    <div>
+    <>
       {/* ===== HERO ===== */}
-      <section className="hero-section">
-        <div className="max-w-content mx-auto px-6 w-full">
+      <section className="hero">
+        <div className="wrap">
           <div className="hero-grid">
             <div>
-              <div className="hero-animate-1">
-                <span className="availability-pill">
-                  <span className="pulse-dot" />
-                  Open to new opportunities
-                </span>
+              <div className="hero-status enter-1">
+                <span className="mono">Available for work — {profile.location}</span>
               </div>
 
-              <h1 className="hero-animate-2 hero-title">
-                I run operations
+              <h1 className="display hero-title enter-2">
+                Operations,
                 <br />
-                <span className="gradient-text">and build the software</span>
+                administration,
                 <br />
-                they run on.
+                <em>and the software</em>
+                <br />
+                <em>underneath.</em>
               </h1>
 
-              <p className="hero-animate-3 hero-lede">{profile.summary}</p>
+              <p className="lede hero-lede enter-3">{profile.summary}</p>
 
-              <div className="hero-animate-5 hero-actions">
-                <Link href="/work" className="btn-primary">
-                  See live platforms
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M5 12h14M12 5l7 7-7 7" />
-                  </svg>
+              <div className="hero-actions enter-3">
+                <Link href="/work" className="btn btn-solid">
+                  See live platforms <Arrow />
                 </Link>
-                <Link href="/resume" className="btn-secondary">
-                  View résumé
-                </Link>
+                <Link href="/resume" className="btn btn-outline">Read the résumé</Link>
               </div>
 
-              <div className="hero-animate-5 hero-meta">
-                <span><Icon name="ops" size={15} /> {profile.location}</span>
-                <span><Icon name="admin" size={15} /> {current.role} @ {current.company}</span>
+              <div className="hero-meta enter-4">
+                <span className="mono">{current.role}</span>
+                <span className="mono">{current.company}</span>
+                <span className="mono">{current.period}</span>
               </div>
             </div>
 
-            <div className="hero-animate-4 hero-portrait-wrap">
-              <HeroOrb />
-              <div className="hero-portrait">
+            <div className="hero-visual enter-3">
+              <HeroWire />
+              <div className="portrait">
                 <Image
                   src="/images/profile.jpg"
                   alt="Ricky Savanna"
                   width={420}
-                  height={420}
+                  height={525}
                   priority
-                  sizes="(max-width: 1024px) 60vw, 420px"
+                  sizes="(max-width: 1000px) 70vw, 330px"
                 />
               </div>
             </div>
           </div>
+        </div>
+      </section>
 
-          {/* Stats */}
-          <div className="hero-animate-5 stat-row">
+      {/* ===== FIGURES ===== */}
+      <section style={{ padding: '0' }}>
+        <div className="wrap">
+          <div className="figures">
             {stats.map(s => (
-              <div key={s.label} className="stat-card">
-                <div className="stat-number">{s.value}</div>
-                <div className="stat-label">{s.label}</div>
+              <div key={s.label} className="figure">
+                <div className="figure-value">{s.value}</div>
+                <div className="figure-label">{s.label}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ===== LIVE PLATFORMS ===== */}
+      {/* ===== LIVE WORK ===== */}
       <section className="section">
-        <div className="max-w-content mx-auto px-6">
-          <ScrollAnimator>
-            <span className="section-label">Live Work</span>
-            <h2 className="section-title">Platforms running in production</h2>
-            <p className="section-sub">
-              These aren&apos;t mockups. Pick a tab and the real site loads right here — click through it
-              without leaving the page.
-            </p>
-          </ScrollAnimator>
+        <div className="wrap">
+          <Reveal>
+            <div className="section-head">
+              <span className="section-index">01 — Live work</span>
+              <div>
+                <h2 className="h2">Four platforms running in production.</h2>
+                <p>
+                  Not mockups or case studies. Pick a tab and the real site loads in the frame below —
+                  click through it without leaving this page.
+                </p>
+              </div>
+            </div>
+          </Reveal>
 
-          <ScrollAnimator>
+          <Reveal>
             <LiveBrowser />
-          </ScrollAnimator>
+          </Reveal>
         </div>
       </section>
 
       {/* ===== CAPABILITIES ===== */}
       <section className="section">
-        <div className="max-w-content mx-auto px-6">
-          <ScrollAnimator>
-            <span className="section-label">What I Do</span>
-            <h2 className="section-title">Operations, engineering, and the glue between them</h2>
-            <p className="section-sub">
-              A short list of the work I take on — the technical side and the business side.
-            </p>
-          </ScrollAnimator>
+        <div className="wrap">
+          <Reveal>
+            <div className="section-head">
+              <span className="section-index">02 — Services</span>
+              <div>
+                <h2 className="h2">What I take on.</h2>
+                <p>The engineering side and the business side, which in my experience are the same job.</p>
+              </div>
+            </div>
+          </Reveal>
 
-          <div className="capability-grid">
-            {capabilities.map(cap => (
-              <ScrollAnimator key={cap.title}>
-                <div className="capability-card">
-                  <div className="capability-icon">
-                    <Icon name={cap.icon} size={22} />
-                  </div>
-                  <h3>{cap.title}</h3>
+          <div className="cap-list">
+            {capabilities.map((cap, i) => (
+              <Reveal key={cap.title} delay={i * 35}>
+                <div className="cap-row">
+                  <span className="cap-num">{String(i + 1).padStart(2, '0')}</span>
+                  <h3 className="h3">{cap.title}</h3>
                   <p>{cap.body}</p>
                 </div>
-              </ScrollAnimator>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -125,58 +133,51 @@ export default function Home() {
 
       {/* ===== SKILLS ===== */}
       <section className="section">
-        <div className="max-w-content mx-auto px-6">
-          <ScrollAnimator>
-            <span className="section-label">Skills</span>
-            <h2 className="section-title">The toolkit</h2>
-          </ScrollAnimator>
+        <div className="wrap">
+          <Reveal>
+            <div className="section-head">
+              <span className="section-index">03 — Toolkit</span>
+              <div>
+                <h2 className="h2">Tools and territory.</h2>
+              </div>
+            </div>
+          </Reveal>
 
-          <div className="skill-grid">
-            {skillGroups.map(group => (
-              <ScrollAnimator key={group.category}>
-                <div className="skill-card">
-                  <div className="skill-card-head">
-                    <span className="skill-card-icon"><Icon name={group.icon} size={18} /></span>
-                    <h3>{group.category}</h3>
-                  </div>
-                  <div className="skill-card-tags">
+          <dl className="skill-list">
+            {skillGroups.map((group, i) => (
+              <Reveal key={group.category} delay={i * 35}>
+                <div className="skill-row">
+                  <dt>{group.category}</dt>
+                  <dd>
                     {group.items.map(item => (
-                      <span key={item} className="skill-tag">{item}</span>
+                      <span key={item}>{item}</span>
                     ))}
-                  </div>
+                  </dd>
                 </div>
-              </ScrollAnimator>
+              </Reveal>
             ))}
-          </div>
+          </dl>
         </div>
       </section>
 
       {/* ===== CTA ===== */}
-      <section className="section">
-        <div className="max-w-content mx-auto px-6">
-          <ScrollAnimator>
-            <div className="cta-card">
-              <h2>
-                Let&apos;s build something <span className="gradient-text">together</span>
-              </h2>
-              <p>
-                Need someone who can run the operation and ship the software behind it? That&apos;s the job
-                I already do every day.
-              </p>
-              <div className="cta-actions">
-                <a href={`mailto:${profile.email}`} className="btn-primary">
-                  Email me
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <rect x="3" y="5" width="18" height="14" rx="2" />
-                    <path d="m3 7 9 6 9-6" />
-                  </svg>
-                </a>
-                <Link href="/contact" className="btn-secondary">Contact details</Link>
-              </div>
+      <section className="cta">
+        <div className="wrap">
+          <Reveal>
+            <h2 className="h1">Need someone who can run it and build it?</h2>
+            <p>
+              That&apos;s the job I already do every day — payouts and purchase orders in the morning,
+              production deploys in the afternoon.
+            </p>
+            <div className="cta-actions">
+              <a href={`mailto:${profile.email}`} className="btn btn-solid">
+                {profile.email} <Arrow />
+              </a>
+              <Link href="/contact" className="btn btn-outline">All contact details</Link>
             </div>
-          </ScrollAnimator>
+          </Reveal>
         </div>
       </section>
-    </div>
+    </>
   )
 }

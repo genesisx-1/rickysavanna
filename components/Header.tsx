@@ -2,108 +2,74 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import ThemeToggle from './ThemeToggle'
+import { profile } from '@/lib/resume'
 
 const links = [
-  { href: '/', label: 'Home' },
-  { href: '/about', label: 'About' },
+  { href: '/', label: 'Index' },
   { href: '/work', label: 'Work' },
   { href: '/resume', label: 'Résumé' },
+  { href: '/about', label: 'About' },
   { href: '/contact', label: 'Contact' },
 ]
 
 export default function Header() {
   const pathname = usePathname()
-  const [menuOpen, setMenuOpen] = useState(false)
+  const [open, setOpen] = useState(false)
+
+  useEffect(() => { setOpen(false) }, [pathname])
+
+  useEffect(() => {
+    document.body.style.overflow = open ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
+  }, [open])
 
   return (
     <>
-      <header style={{
-        position: 'sticky',
-        top: 0,
-        zIndex: 50,
-        backdropFilter: 'blur(20px)',
-        WebkitBackdropFilter: 'blur(20px)',
-        background: 'var(--bg-primary)',
-        borderBottom: '1px solid var(--border)',
-        transition: 'background 0.5s ease, border-color 0.5s ease',
-      }}>
-        <div className="max-w-content mx-auto px-6" style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          height: '65px',
-        }}>
-          {/* Logo */}
-          <Link href="/" style={{
-            fontSize: '20px',
-            fontWeight: 800,
-            letterSpacing: '-0.5px',
-            textDecoration: 'none',
-            color: 'var(--text-primary)',
-          }}>
-            Ricky Savanna<span style={{ color: 'var(--accent)' }}>.</span>
+      <header className="site-header">
+        <div className="wrap site-header-inner">
+          <Link href="/" className="wordmark">
+            Ricky Savanna
           </Link>
 
-          {/* Desktop Nav */}
-          <nav className="hidden md:flex" style={{ alignItems: 'center', gap: '32px' }}>
+          <nav className="nav">
             {links.map(link => (
               <Link
                 key={link.href}
                 href={link.href}
                 className={`nav-link ${pathname === link.href ? 'active' : ''}`}
-                style={pathname === link.href ? { color: 'var(--accent-light)' } : undefined}
               >
                 {link.label}
               </Link>
             ))}
-            <a
-              href="mailto:rickysvna@gmail.com"
-              className="btn-primary"
-              style={{ padding: '8px 20px', fontSize: '13px' }}
-            >
-              Hire Me
-            </a>
-            <ThemeToggle />
           </nav>
 
-          {/* Mobile */}
-          <div className="flex md:hidden" style={{ alignItems: 'center', gap: '16px' }}>
+          <div className="header-right">
+            <a href={`mailto:${profile.email}`} className="btn btn-solid btn-sm header-cta">
+              Get in touch
+            </a>
             <ThemeToggle />
             <button
-              className={`hamburger ${menuOpen ? 'open' : ''}`}
-              onClick={() => setMenuOpen(!menuOpen)}
-              aria-label="Toggle menu"
+              className={`menu-btn ${open ? 'open' : ''}`}
+              onClick={() => setOpen(v => !v)}
+              aria-label={open ? 'Close menu' : 'Open menu'}
+              aria-expanded={open}
             >
-              <span />
-              <span />
-              <span />
+              <span /><span /><span />
             </button>
           </div>
         </div>
       </header>
 
-      {/* Mobile Menu */}
-      <div className={`mobile-menu ${menuOpen ? 'open' : ''}`}>
+      <div className={`mobile-menu ${open ? 'open' : ''}`}>
         {links.map(link => (
-          <Link
-            key={link.href}
-            href={link.href}
-            className="nav-link"
-            style={{ fontSize: '24px' }}
-            onClick={() => setMenuOpen(false)}
-          >
+          <Link key={link.href} href={link.href} onClick={() => setOpen(false)}>
             {link.label}
           </Link>
         ))}
-        <a
-          href="mailto:rickysvna@gmail.com"
-          className="btn-primary"
-          style={{ marginTop: '16px' }}
-          onClick={() => setMenuOpen(false)}
-        >
-          Hire Me
+        <a href={`mailto:${profile.email}`} className="btn btn-solid" onClick={() => setOpen(false)}>
+          Get in touch
         </a>
       </div>
     </>

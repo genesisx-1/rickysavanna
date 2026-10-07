@@ -2,12 +2,7 @@
 
 import { useEffect, useRef, ReactNode } from 'react'
 
-interface Props {
-  children: ReactNode
-  stagger?: boolean
-}
-
-export default function ScrollAnimator({ children, stagger }: Props) {
+export default function Reveal({ children, delay = 0 }: { children: ReactNode; delay?: number }) {
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -17,20 +12,17 @@ export default function ScrollAnimator({ children, stagger }: Props) {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          el.classList.add('animate-visible')
+          el.style.transitionDelay = `${delay}ms`
+          el.classList.add('is-visible')
           observer.unobserve(el)
         }
       },
-      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+      { threshold: 0.08, rootMargin: '0px 0px -60px 0px' }
     )
 
     observer.observe(el)
     return () => observer.disconnect()
-  }, [])
+  }, [delay])
 
-  return (
-    <div ref={ref} className={stagger ? 'stagger-children' : 'animate-on-scroll'}>
-      {children}
-    </div>
-  )
+  return <div ref={ref} className="reveal">{children}</div>
 }
