@@ -16,7 +16,7 @@ export const profile = {
   site: 'rickysavanna.me',
   location: 'Arlington, TX',
   summary:
-    'Operations, administrative, and IT support professional with 5 years of experience keeping businesses running smoothly. I run end-to-end operations for a seven-figure transportation company — payments, vehicle purchasing, user support — and I build the in-house software that company runs on.',
+    'Operations, administrative, and IT support professional with 5 years of experience keeping businesses running smoothly. I run end-to-end operations for a seven-figure transportation company — payments, vehicle purchasing, user support — and I help build and maintain the in-house software it runs on.',
   longSummary:
     'I sit where business operations and software meet. On the operations side I handle payments, vendor and driver payouts, vehicle purchasing, account onboarding, and first-line IT support for 100+ people. On the build side I ship full-scale applications with agentic coding tools, replacing spreadsheets with real platforms that the whole team uses every day.',
 }
