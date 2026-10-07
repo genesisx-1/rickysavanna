@@ -3,183 +3,206 @@
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 
+const MAX_LINKS = 1400
+const PARTICLE_COUNT = 260
+const LINK_DIST = 2.6
+
 export default function ParticleBackground() {
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (!containerRef.current) return
+    const container = containerRef.current
+    if (!container) return
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
     const scene = new THREE.Scene()
-    const camera = new THREE.PerspectiveCamera(
-      75,
-      window.innerWidth / window.innerHeight,
-      0.1,
-      1000
-    )
-    camera.position.z = 5
+    const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 100)
+    camera.position.z = 11
 
-    const renderer = new THREE.WebGLRenderer({
-      alpha: true,
-      antialias: true,
-    })
+    let renderer: THREE.WebGLRenderer
+    try {
+      renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: 'low-power' })
+    } catch {
+      return
+    }
     renderer.setSize(window.innerWidth, window.innerHeight)
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-    containerRef.current.appendChild(renderer.domElement)
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75))
+    container.appendChild(renderer.domElement)
 
-    // Particles
-    const particleCount = 800
-    const positions = new Float32Array(particleCount * 3)
-    const velocities = new Float32Array(particleCount * 3)
-
-    for (let i = 0; i < particleCount * 3; i++) {
-      positions[i] = (Math.random() - 0.5) * 25
-      velocities[i] = (Math.random() - 0.5) * 0.002
+    const readAccent = () => {
+      const styles = getComputedStyle(document.documentElement)
+      const hex = styles.getPropertyValue('--particle-color').trim() || '#6c5ce7'
+      try {
+        return new THREE.Color(hex)
+      } catch {
+        return new THREE.Color('#6c5ce7')
+      }
     }
 
-    const geometry = new THREE.BufferGeometry()
-    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
+    // ---- Points ----
+    const positions = new Float32Array(PARTICLE_COUNT * 3)
+    const velocities = new Float32Array(PARTICLE_COUNT * 3)
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      positions[i * 3] = (Math.random() - 0.5) * 26
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 16
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 10
+      velocities[i * 3] = (Math.random() - 0.5) * 0.009
+      velocities[i * 3 + 1] = (Math.random() - 0.5) * 0.009
+      velocities[i * 3 + 2] = (Math.random() - 0.5) * 0.005
+    }
 
-    const material = new THREE.PointsMaterial({
-      color: 0x6c5ce7,
-      size: 0.03,
+    const pointGeometry = new THREE.BufferGeometry()
+    pointGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
+
+    const accent = readAccent()
+    const pointMaterial = new THREE.PointsMaterial({
+      color: accent,
+      size: 0.08,
       sizeAttenuation: true,
       transparent: true,
-      opacity: 0.4,
+      opacity: 0.75,
       blending: THREE.AdditiveBlending,
+      depthWrite: false,
     })
+    const points = new THREE.Points(pointGeometry, pointMaterial)
+    scene.add(points)
 
-    const particles = new THREE.Points(geometry, material)
-    scene.add(particles)
-
-    // Connection lines
-    const lineGeometry = new THREE.BufferGeometry()
-    const linePositions = new Float32Array(particleCount * particleCount * 3)
-    lineGeometry.setAttribute('position', new THREE.BufferAttribute(linePositions, 3))
-    const lineMaterial = new THREE.LineBasicMaterial({
-      color: 0x6c5ce7,
+    // ---- Links (bounded buffer) ----
+    const linkPositions = new Float32Array(MAX_LINKS * 2 * 3)
+    const linkGeometry = new THREE.BufferGeometry()
+    const linkAttr = new THREE.BufferAttribute(linkPositions, 3)
+    linkAttr.setUsage(THREE.DynamicDrawUsage)
+    linkGeometry.setAttribute('position', linkAttr)
+    const linkMaterial = new THREE.LineBasicMaterial({
+      color: accent,
       transparent: true,
-      opacity: 0.06,
+      opacity: 0.16,
       blending: THREE.AdditiveBlending,
+      depthWrite: false,
     })
-    const lines = new THREE.LineSegments(lineGeometry, lineMaterial)
-    scene.add(lines)
+    const links = new THREE.LineSegments(linkGeometry, linkMaterial)
+    scene.add(links)
 
-    // Mouse interaction
-    const mouse = { x: 0, y: 0 }
-    const handleMouseMove = (e: MouseEvent) => {
-      mouse.x = (e.clientX / window.innerWidth) * 2 - 1
-      mouse.y = -(e.clientY / window.innerHeight) * 2 + 1
+    // ---- Interaction ----
+    const pointer = { x: 0, y: 0 }
+    const target = { x: 0, y: 0 }
+    const onPointerMove = (e: PointerEvent) => {
+      target.x = (e.clientX / window.innerWidth - 0.5) * 2
+      target.y = (e.clientY / window.innerHeight - 0.5) * 2
     }
-    window.addEventListener('mousemove', handleMouseMove)
+    window.addEventListener('pointermove', onPointerMove, { passive: true })
 
-    // Animation
-    let animationId: number
-    const animate = () => {
-      animationId = requestAnimationFrame(animate)
+    const onResize = () => {
+      camera.aspect = window.innerWidth / window.innerHeight
+      camera.updateProjectionMatrix()
+      renderer.setSize(window.innerWidth, window.innerHeight)
+    }
+    window.addEventListener('resize', onResize)
 
-      const posAttr = geometry.attributes.position as THREE.BufferAttribute
-      const posArr = posAttr.array as Float32Array
+    const themeObserver = new MutationObserver(() => {
+      const next = readAccent()
+      pointMaterial.color.copy(next)
+      linkMaterial.color.copy(next)
+    })
+    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
 
-      // Update particle positions
-      for (let i = 0; i < particleCount * 3; i++) {
-        posArr[i] += velocities[i]
-        if (posArr[i] > 12.5 || posArr[i] < -12.5) {
-          velocities[i] *= -1
+    let frame = 0
+    let running = true
+    const onVisibility = () => {
+      running = !document.hidden
+      if (running) animate()
+    }
+    document.addEventListener('visibilitychange', onVisibility)
+
+    const posAttr = pointGeometry.getAttribute('position') as THREE.BufferAttribute
+
+    function animate() {
+      if (!running) return
+      frame = requestAnimationFrame(animate)
+
+      const pos = posAttr.array as Float32Array
+
+      if (!reduceMotion) {
+        for (let i = 0; i < PARTICLE_COUNT; i++) {
+          const ix = i * 3
+          pos[ix] += velocities[ix]
+          pos[ix + 1] += velocities[ix + 1]
+          pos[ix + 2] += velocities[ix + 2]
+          if (pos[ix] > 13 || pos[ix] < -13) velocities[ix] *= -1
+          if (pos[ix + 1] > 8 || pos[ix + 1] < -8) velocities[ix + 1] *= -1
+          if (pos[ix + 2] > 5 || pos[ix + 2] < -5) velocities[ix + 2] *= -1
         }
+        posAttr.needsUpdate = true
       }
 
-      // Mouse influence
-      for (let i = 0; i < particleCount; i++) {
-        const idx = i * 3
-        const dx = posArr[idx] - mouse.x * 5
-        const dy = posArr[idx + 1] - mouse.y * 5
-        const dist = Math.sqrt(dx * dx + dy * dy)
-        if (dist < 2) {
-          posArr[idx] += dx * 0.005
-          posArr[idx + 1] += dy * 0.005
-        }
-      }
-
-      posAttr.needsUpdate = true
-
-      // Update connections (only check nearby particles for performance)
-      let lineIndex = 0
-      const lineArr = lineGeometry.attributes.position.array as Float32Array
-      const maxConnections = 300
-      let connections = 0
-
-      for (let i = 0; i < particleCount && connections < maxConnections; i++) {
-        for (let j = i + 1; j < particleCount && connections < maxConnections; j++) {
-          const dx = posArr[i * 3] - posArr[j * 3]
-          const dy = posArr[i * 3 + 1] - posArr[j * 3 + 1]
-          const dz = posArr[i * 3 + 2] - posArr[j * 3 + 2]
-          const dist = Math.sqrt(dx * dx + dy * dy + dz * dz)
-
-          if (dist < 1.5) {
-            lineArr[lineIndex++] = posArr[i * 3]
-            lineArr[lineIndex++] = posArr[i * 3 + 1]
-            lineArr[lineIndex++] = posArr[i * 3 + 2]
-            lineArr[lineIndex++] = posArr[j * 3]
-            lineArr[lineIndex++] = posArr[j * 3 + 1]
-            lineArr[lineIndex++] = posArr[j * 3 + 2]
-            connections++
+      // rebuild links
+      let n = 0
+      for (let i = 0; i < PARTICLE_COUNT && n < MAX_LINKS; i++) {
+        const ax = pos[i * 3], ay = pos[i * 3 + 1], az = pos[i * 3 + 2]
+        for (let j = i + 1; j < PARTICLE_COUNT && n < MAX_LINKS; j++) {
+          const dx = ax - pos[j * 3]
+          const dy = ay - pos[j * 3 + 1]
+          const dz = az - pos[j * 3 + 2]
+          if (dx * dx + dy * dy + dz * dz < LINK_DIST * LINK_DIST) {
+            const o = n * 6
+            linkPositions[o] = ax
+            linkPositions[o + 1] = ay
+            linkPositions[o + 2] = az
+            linkPositions[o + 3] = pos[j * 3]
+            linkPositions[o + 4] = pos[j * 3 + 1]
+            linkPositions[o + 5] = pos[j * 3 + 2]
+            n++
           }
         }
       }
+      linkGeometry.setDrawRange(0, n * 2)
+      linkAttr.needsUpdate = true
 
-      // Clear remaining lines
-      for (let i = lineIndex; i < lineArr.length; i++) {
-        lineArr[i] = 0
+      pointer.x += (target.x - pointer.x) * 0.04
+      pointer.y += (target.y - pointer.y) * 0.04
+      camera.position.x = pointer.x * 1.1
+      camera.position.y = -pointer.y * 0.7
+      camera.lookAt(0, 0, 0)
+
+      if (!reduceMotion) {
+        points.rotation.y += 0.0006
+        links.rotation.y = points.rotation.y
       }
-
-      lineGeometry.attributes.position.needsUpdate = true
-
-      // Slow rotation
-      particles.rotation.y += 0.0003
-      lines.rotation.y += 0.0003
 
       renderer.render(scene, camera)
     }
     animate()
 
-    // Theme observer
-    const observer = new MutationObserver(() => {
-      const theme = document.documentElement.getAttribute('data-theme')
-      const color = theme === 'light' ? 0xa29bfe : 0x6c5ce7
-      material.color.setHex(color)
-      lineMaterial.color.setHex(color)
-      material.opacity = theme === 'light' ? 0.3 : 0.4
-      lineMaterial.opacity = theme === 'light' ? 0.04 : 0.06
-    })
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
-
-    const handleResize = () => {
-      camera.aspect = window.innerWidth / window.innerHeight
-      camera.updateProjectionMatrix()
-      renderer.setSize(window.innerWidth, window.innerHeight)
-    }
-    window.addEventListener('resize', handleResize)
-
     return () => {
-      observer.disconnect()
-      window.removeEventListener('mousemove', handleMouseMove)
-      window.removeEventListener('resize', handleResize)
-      cancelAnimationFrame(animationId)
-      if (containerRef.current && renderer.domElement) {
-        containerRef.current.removeChild(renderer.domElement)
-      }
+      running = false
+      cancelAnimationFrame(frame)
+      window.removeEventListener('pointermove', onPointerMove)
+      window.removeEventListener('resize', onResize)
+      document.removeEventListener('visibilitychange', onVisibility)
+      themeObserver.disconnect()
+      pointGeometry.dispose()
+      linkGeometry.dispose()
+      pointMaterial.dispose()
+      linkMaterial.dispose()
       renderer.dispose()
-      geometry.dispose()
-      material.dispose()
-      lineGeometry.dispose()
-      lineMaterial.dispose()
+      if (renderer.domElement.parentNode === container) {
+        container.removeChild(renderer.domElement)
+      }
     }
   }, [])
 
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 -z-10 pointer-events-none"
+      aria-hidden="true"
+      style={{
+        position: 'fixed',
+        inset: 0,
+        zIndex: 0,
+        pointerEvents: 'none',
+        opacity: 0.55,
+      }}
     />
   )
 }

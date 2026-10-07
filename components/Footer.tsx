@@ -12,10 +12,11 @@ export default function Footer() {
           {/* Brand */}
           <div>
             <div style={{ fontSize: '20px', fontWeight: 800, marginBottom: '8px' }}>
-              RS<span style={{ color: 'var(--accent)' }}>.</span>
+              Ricky Savanna<span style={{ color: 'var(--accent)' }}>.</span>
             </div>
             <p style={{ color: 'var(--text-muted)', fontSize: '14px', lineHeight: '1.6' }}>
-              Full-stack developer building modern software solutions.
+              Operations &amp; IT professional building the software businesses actually run on.
+              Arlington, TX.
             </p>
           </div>
 
@@ -28,6 +29,7 @@ export default function Footer() {
               <Link href="/" className="nav-link" style={{ fontSize: '14px' }}>Home</Link>
               <Link href="/about" className="nav-link" style={{ fontSize: '14px' }}>About</Link>
               <Link href="/work" className="nav-link" style={{ fontSize: '14px' }}>Work</Link>
+              <Link href="/resume" className="nav-link" style={{ fontSize: '14px' }}>Résumé</Link>
               <Link href="/contact" className="nav-link" style={{ fontSize: '14px' }}>Contact</Link>
             </div>
           </div>

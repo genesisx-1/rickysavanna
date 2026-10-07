@@ -9,6 +9,7 @@ const links = [
   { href: '/', label: 'Home' },
   { href: '/about', label: 'About' },
   { href: '/work', label: 'Work' },
+  { href: '/resume', label: 'Résumé' },
   { href: '/contact', label: 'Contact' },
 ]
 
@@ -42,7 +43,7 @@ export default function Header() {
             textDecoration: 'none',
             color: 'var(--text-primary)',
           }}>
-            RS<span style={{ color: 'var(--accent)' }}>.</span>
+            Ricky Savanna<span style={{ color: 'var(--accent)' }}>.</span>
           </Link>
 
           {/* Desktop Nav */}
@@ -58,13 +59,11 @@ export default function Header() {
               </Link>
             ))}
             <a
-              href="https://calendly.com/rsvna"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="mailto:rickysvna@gmail.com"
               className="btn-primary"
               style={{ padding: '8px 20px', fontSize: '13px' }}
             >
-              Book a Call
+              Hire Me
             </a>
             <ThemeToggle />
           </nav>
@@ -99,14 +98,12 @@ export default function Header() {
           </Link>
         ))}
         <a
-          href="https://calendly.com/rsvna"
-          target="_blank"
-          rel="noopener noreferrer"
+          href="mailto:rickysvna@gmail.com"
           className="btn-primary"
           style={{ marginTop: '16px' }}
           onClick={() => setMenuOpen(false)}
         >
-          Book a Call
+          Hire Me
         </a>
       </div>
     </>

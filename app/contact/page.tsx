@@ -1,171 +1,129 @@
+import type { Metadata } from 'next'
+import Link from 'next/link'
 import ScrollAnimator from '@/components/ScrollAnimator'
+import { profile } from '@/lib/resume'
+
+export const metadata: Metadata = {
+  title: 'Contact | Ricky Savanna',
+  description: 'Get in touch with Ricky Savanna — operations, IT support, and full-stack development.',
+}
+
+const channels = [
+  {
+    label: 'Email',
+    value: profile.email,
+    href: `mailto:${profile.email}`,
+    note: 'Best way to reach me — I reply the same day.',
+    icon: (
+      <>
+        <rect x="3" y="5" width="18" height="14" rx="2" />
+        <path d="m3 7 9 6 9-6" />
+      </>
+    ),
+  },
+  {
+    label: 'Phone',
+    value: profile.phone,
+    href: `tel:${profile.phone.replace(/-/g, '')}`,
+    note: 'Call or text during business hours, CT.',
+    icon: <path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.4 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.4 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z" />,
+  },
+  {
+    label: 'Book a call',
+    value: 'calendly.com/rsvna',
+    href: 'https://calendly.com/rsvna',
+    note: 'Grab a slot that works for you.',
+    icon: (
+      <>
+        <rect x="3" y="4" width="18" height="18" rx="2" />
+        <path d="M16 2v4M8 2v4M3 10h18" />
+      </>
+    ),
+  },
+  {
+    label: 'Location',
+    value: profile.location,
+    note: 'Open to hybrid and remote roles.',
+    icon: (
+      <>
+        <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+        <circle cx="12" cy="10" r="3" />
+      </>
+    ),
+  },
+]
+
+const socials = [
+  { label: 'GitHub', href: 'https://github.com/genesisx-1' },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/rsavanna/' },
+  { label: 'X', href: 'https://x.com/rickysvna' },
+]
 
 export default function ContactPage() {
   return (
     <div>
-      {/* Hero */}
-      <section style={{ padding: '80px 0 40px' }}>
+      <section className="page-hero">
         <div className="max-w-content mx-auto px-6">
           <div className="hero-animate-1">
             <span className="section-label">Contact</span>
           </div>
-          <h1 className="hero-animate-2" style={{
-            fontSize: 'clamp(36px, 5vw, 56px)',
-            fontWeight: 900,
-            lineHeight: 1.1,
-            letterSpacing: '-2px',
-            marginBottom: '16px',
-          }}>
+          <h1 className="hero-animate-2 page-title">
             Let&apos;s <span className="gradient-text">connect</span>
           </h1>
-          <p className="hero-animate-3" style={{
-            color: 'var(--text-secondary)',
-            fontSize: '18px',
-            maxWidth: '550px',
-          }}>
-            Have a project in mind or want to collaborate? I&apos;m always open to discussing new opportunities.
+          <p className="hero-animate-3 page-lede">
+            Hiring, contracting, or just want to talk through a build — I&apos;m easy to reach.
           </p>
         </div>
       </section>
 
-      {/* Contact Options */}
-      <section style={{ padding: '40px 0 80px' }}>
+      <section className="section" style={{ paddingTop: '20px' }}>
         <div className="max-w-content mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6" style={{ marginBottom: '48px' }}>
-            {/* Book a Call */}
-            <ScrollAnimator>
-              <a
-                href="https://calendly.com/rsvna"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="contact-card"
-                style={{ display: 'block', textDecoration: 'none', color: 'inherit', height: '100%' }}
-              >
-                <div style={{
-                  width: '48px',
-                  height: '48px',
-                  borderRadius: '12px',
-                  background: 'var(--accent-glow)',
-                  border: '1px solid var(--accent)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginBottom: '20px',
-                }}>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-light)" strokeWidth="2">
-                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-                    <line x1="16" y1="2" x2="16" y2="6" />
-                    <line x1="8" y1="2" x2="8" y2="6" />
-                    <line x1="3" y1="10" x2="21" y2="10" />
-                  </svg>
-                </div>
-                <h3 style={{ fontSize: '20px', fontWeight: 700, marginBottom: '8px' }}>
-                  Book a Call
-                </h3>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '15px', lineHeight: '1.6', marginBottom: '16px' }}>
-                  Schedule a time to discuss your project, ideas, or potential collaboration.
-                </p>
-                <span className="nav-link" style={{ fontSize: '14px', fontWeight: 600 }}>
-                  Open Calendly &rarr;
-                </span>
-              </a>
-            </ScrollAnimator>
-
-            {/* Email */}
-            <ScrollAnimator>
-              <a
-                href="mailto:rsvna@proton.me"
-                className="contact-card"
-                style={{ display: 'block', textDecoration: 'none', color: 'inherit', height: '100%' }}
-              >
-                <div style={{
-                  width: '48px',
-                  height: '48px',
-                  borderRadius: '12px',
-                  background: 'var(--accent-secondary-glow)',
-                  border: '1px solid var(--accent-secondary)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginBottom: '20px',
-                }}>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-secondary)" strokeWidth="2">
-                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                    <polyline points="22,6 12,13 2,6" />
-                  </svg>
-                </div>
-                <h3 style={{ fontSize: '20px', fontWeight: 700, marginBottom: '8px' }}>
-                  Email Me
-                </h3>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '15px', lineHeight: '1.6', marginBottom: '16px' }}>
-                  Drop me an email and I&apos;ll get back to you as soon as possible.
-                </p>
-                <span style={{ color: 'var(--accent-light)', fontSize: '15px', fontWeight: 500 }}>
-                  rsvna@proton.me
-                </span>
-              </a>
-            </ScrollAnimator>
+          <div className="contact-grid">
+            {channels.map(c => {
+              const inner = (
+                <>
+                  <span className="contact-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                      {c.icon}
+                    </svg>
+                  </span>
+                  <h3>{c.label}</h3>
+                  <p className="contact-value">{c.value}</p>
+                  <p className="contact-note">{c.note}</p>
+                </>
+              )
+              return (
+                <ScrollAnimator key={c.label}>
+                  {c.href ? (
+                    <a
+                      href={c.href}
+                      target={c.href.startsWith('http') ? '_blank' : undefined}
+                      rel={c.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                      className="contact-card"
+                    >
+                      {inner}
+                    </a>
+                  ) : (
+                    <div className="contact-card">{inner}</div>
+                  )}
+                </ScrollAnimator>
+              )
+            })}
           </div>
 
-          {/* Phone & Socials */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Phone */}
-            <ScrollAnimator>
-              <a
-                href="tel:+12144224939"
-                className="contact-card"
-                style={{ display: 'block', textDecoration: 'none', color: 'inherit' }}
-              >
-                <div style={{
-                  width: '48px',
-                  height: '48px',
-                  borderRadius: '12px',
-                  background: 'var(--accent-glow)',
-                  border: '1px solid var(--accent)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginBottom: '20px',
-                }}>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-light)" strokeWidth="2">
-                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-                  </svg>
-                </div>
-                <h3 style={{ fontSize: '20px', fontWeight: 700, marginBottom: '8px' }}>
-                  Call Me
-                </h3>
-                <span style={{ color: 'var(--accent-light)', fontSize: '15px', fontWeight: 500 }}>
-                  (214) 422-4939
-                </span>
-              </a>
-            </ScrollAnimator>
-
-            {/* Socials */}
-            <ScrollAnimator>
-              <div className="contact-card">
-                <h3 style={{ fontSize: '20px', fontWeight: 700, marginBottom: '16px' }}>
-                  Find Me Online
-                </h3>
-                <div style={{ display: 'flex', gap: '12px' }}>
-                  <a href="https://github.com/genesisx-1" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="GitHub">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                    </svg>
+          <ScrollAnimator>
+            <div className="cta-card" style={{ marginTop: '48px' }}>
+              <h2>Find me online</h2>
+              <div className="cta-actions">
+                {socials.map(s => (
+                  <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" className="btn-secondary">
+                    {s.label}
                   </a>
-                  <a href="https://www.linkedin.com/in/rsavanna/" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="LinkedIn">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                    </svg>
-                  </a>
-                  <a href="https://x.com/rickysvna" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="X / Twitter">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                    </svg>
-                  </a>
-                </div>
+                ))}
+                <Link href="/resume" className="btn-primary">View résumé</Link>
               </div>
-            </ScrollAnimator>
-          </div>
+            </div>
+          </ScrollAnimator>
         </div>
       </section>
     </div>

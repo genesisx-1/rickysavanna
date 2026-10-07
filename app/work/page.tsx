@@ -1,214 +1,117 @@
-import Image from 'next/image'
+import type { Metadata } from 'next'
 import Link from 'next/link'
-import { getProjects } from '@/lib/projects'
-import { remark } from 'remark'
-import remarkHtml from 'remark-html'
 import ScrollAnimator from '@/components/ScrollAnimator'
+import LiveBrowser from '@/components/LiveBrowser'
+import Icon from '@/components/Icon'
+import { platforms, profile, capabilities } from '@/lib/resume'
 
-type ProjectWithContentHtml = Awaited<ReturnType<typeof getProjects>>[number] & {
-  contentHtml?: string
+export const metadata: Metadata = {
+  title: 'Work | Ricky Savanna',
+  description:
+    'Live production platforms built by Ricky Savanna — NTX Limo, LXM Auto, NTX Fleet, and MindMine. Try each one inside the page.',
 }
 
-export default async function WorkPage() {
-  const projects = await getProjects()
-
-  const projectsWithContent = await Promise.all(
-    projects.map(async (project) => {
-      let contentHtml = ''
-      if (project.content) {
-        const processedContent = await remark()
-          .use(remarkHtml, { sanitize: false })
-          .process(project.content)
-        contentHtml = processedContent.toString()
-      }
-      return { ...project, contentHtml } as ProjectWithContentHtml
-    })
-  )
-
-  // Find Astrid Platform for featured section, filter out agent-office
-  const astridPlatform = projectsWithContent.find(p => p.slug === 'astridplatform')
-  const otherProjects = projectsWithContent.filter(p => p.slug !== 'astridplatform' && p.slug !== 'agent-office')
-
+export default function WorkPage() {
   return (
     <div>
-      {/* Hero */}
-      <section style={{ padding: '80px 0 40px' }}>
+      <section className="page-hero">
         <div className="max-w-content mx-auto px-6">
           <div className="hero-animate-1">
-            <span className="section-label">Portfolio</span>
+            <span className="section-label">Work</span>
           </div>
-          <h1 className="hero-animate-2" style={{
-            fontSize: 'clamp(36px, 5vw, 56px)',
-            fontWeight: 900,
-            lineHeight: 1.1,
-            letterSpacing: '-2px',
-            marginBottom: '16px',
-          }}>
-            Things I&apos;ve <span className="gradient-text">built</span>
+          <h1 className="hero-animate-2 page-title">
+            Software people <span className="gradient-text">actually use</span>
           </h1>
-          <p className="hero-animate-3" style={{
-            color: 'var(--text-secondary)',
-            fontSize: '18px',
-            maxWidth: '600px',
-          }}>
-            A collection of projects spanning SaaS tools, mobile apps, and more &mdash; each solving real problems.
+          <p className="hero-animate-3 page-lede">
+            Four platforms in production, running a 130+ vehicle transportation business, a dealership,
+            an investor portal, and an AI product. Load any of them below and use it right here.
           </p>
         </div>
       </section>
 
-      {/* Featured: Astrid Platform */}
-      {astridPlatform && (
-        <section style={{ padding: '40px 0 60px' }}>
-          <div className="max-w-content mx-auto px-6">
-            <ScrollAnimator>
-              <div className="project-card" style={{ borderRadius: '24px' }}>
-                {astridPlatform.url && (
-                  <div className="project-preview" style={{ aspectRatio: '21/9' }}>
-                    <iframe
-                      src={astridPlatform.url}
-                      title={`${astridPlatform.title} preview`}
-                      loading="lazy"
-                      sandbox="allow-same-origin allow-scripts"
-                    />
-                    <a
-                      href={astridPlatform.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{ position: 'absolute', inset: 0, zIndex: 10 }}
-                      aria-label={`Visit ${astridPlatform.title}`}
-                    />
-                  </div>
-                )}
-                <div style={{ padding: '32px 40px 40px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px', flexWrap: 'wrap' }}>
-                    <span className="featured-badge">Flagship Project</span>
-                    {astridPlatform.technologies?.map(tech => (
-                      <span key={tech} className="tech-badge">{tech}</span>
-                    ))}
-                  </div>
-                  <h2 style={{ fontSize: '32px', fontWeight: 800, marginBottom: '12px' }}>
-                    {astridPlatform.title}
-                  </h2>
-                  <p style={{ color: 'var(--text-secondary)', fontSize: '16px', lineHeight: '1.7', marginBottom: '20px', maxWidth: '700px' }}>
-                    {astridPlatform.description}
-                  </p>
-                  {astridPlatform.contentHtml && (
-                    <div
-                      className="prose-custom"
-                      style={{ marginBottom: '24px' }}
-                      dangerouslySetInnerHTML={{ __html: astridPlatform.contentHtml }}
-                    />
-                  )}
-                  <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-                    {astridPlatform.url && (
-                      <a href={astridPlatform.url} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ padding: '12px 24px', fontSize: '14px' }}>
-                        Visit Astrid Platform
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                          <polyline points="15 3 21 3 21 9" />
-                          <line x1="10" y1="14" x2="21" y2="3" />
-                        </svg>
-                      </a>
-                    )}
-                    {astridPlatform.github && (
-                      <a href={astridPlatform.github} target="_blank" rel="noopener noreferrer" className="btn-secondary" style={{ padding: '12px 24px', fontSize: '14px' }}>
-                        View Source
-                      </a>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </ScrollAnimator>
-          </div>
-        </section>
-      )}
-
-      {/* All Other Projects */}
-      <section style={{ padding: '60px 0' }}>
+      {/* Interactive browser */}
+      <section className="section" style={{ paddingTop: '20px' }}>
         <div className="max-w-content mx-auto px-6">
           <ScrollAnimator>
-            <span className="section-label">All Projects</span>
-            <h2 style={{ fontSize: '32px', fontWeight: 800, letterSpacing: '-1px', marginBottom: '40px' }}>
-              More work
-            </h2>
+            <LiveBrowser />
+          </ScrollAnimator>
+        </div>
+      </section>
+
+      {/* Detail cards */}
+      <section className="section">
+        <div className="max-w-content mx-auto px-6">
+          <ScrollAnimator>
+            <span className="section-label">The Breakdown</span>
+            <h2 className="section-title">What each one does</h2>
           </ScrollAnimator>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {otherProjects.map((project) => {
-              const formattedDate = project.date
-                ? new Date(project.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long' })
-                : null
-
-              return (
-                <ScrollAnimator key={project.slug}>
-                  <div className="project-card" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-                    {(() => {
-                      if (project.image) {
-                        return (
-                          <div className="project-preview">
-                            <Image
-                              src={project.image}
-                              alt={`${project.title} preview`}
-                              fill
-                              sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
-                              style={{ objectFit: 'cover' }}
-                            />
-                          </div>
-                        )
-                      }
-
-                      if (project.url) {
-                        return (
-                          <div className="project-preview">
-                            <iframe
-                              src={project.url}
-                              title={`${project.title} preview`}
-                              loading="lazy"
-                              sandbox="allow-same-origin allow-scripts"
-                            />
-                          </div>
-                        )
-                      }
-
-                      return null
-                    })()}
-                    <div style={{ padding: '24px', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                      {formattedDate && (
-                        <span style={{ color: 'var(--text-muted)', fontSize: '12px', marginBottom: '8px' }}>
-                          {formattedDate}
-                        </span>
-                      )}
-                      <h3 style={{ fontSize: '20px', fontWeight: 700, marginBottom: '8px' }}>
-                        {project.title}
-                      </h3>
-                      <p style={{ color: 'var(--text-secondary)', fontSize: '14px', lineHeight: '1.6', marginBottom: '16px', flex: 1 }}>
-                        {project.description}
-                      </p>
-                      {project.technologies && project.technologies.length > 0 && (
-                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '16px' }}>
-                          {project.technologies.slice(0, 4).map(tech => (
-                            <span key={tech} className="tech-badge">{tech}</span>
-                          ))}
-                        </div>
-                      )}
-                      <div style={{ display: 'flex', gap: '16px', marginTop: 'auto' }}>
-                        {project.url && (
-                          <a href={project.url} target="_blank" rel="noopener noreferrer" className="nav-link" style={{ fontSize: '13px', fontWeight: 600 }}>
-                            Live &rarr;
-                          </a>
-                        )}
-                        {project.github && (
-                          <a href={project.github} target="_blank" rel="noopener noreferrer" className="nav-link" style={{ fontSize: '13px', fontWeight: 600 }}>
-                            GitHub &rarr;
-                          </a>
-                        )}
-                      </div>
-                    </div>
+          <div className="platform-grid">
+            {platforms.map(p => (
+              <ScrollAnimator key={p.domain}>
+                <article className="platform-card">
+                  <span className="platform-accent" style={{ background: p.accent }} />
+                  <div className="platform-head">
+                    <h3>{p.name}</h3>
+                    <a href={p.url} target="_blank" rel="noopener noreferrer" className="platform-link">
+                      {p.domain}
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round">
+                        <path d="M15 3h6v6M10 14 21 3M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5" />
+                      </svg>
+                    </a>
                   </div>
-                </ScrollAnimator>
-              )
-            })}
+                  <p className="platform-tagline">{p.tagline}</p>
+                  <p className="platform-desc">{p.description}</p>
+                  <div className="platform-stack">
+                    {p.stack.map(s => (
+                      <span key={s} className="tech-badge">{s}</span>
+                    ))}
+                  </div>
+                </article>
+              </ScrollAnimator>
+            ))}
           </div>
+        </div>
+      </section>
+
+      {/* How I build */}
+      <section className="section">
+        <div className="max-w-content mx-auto px-6">
+          <ScrollAnimator>
+            <span className="section-label">How I Build</span>
+            <h2 className="section-title">Agentic coding, start to finish</h2>
+            <p className="section-sub">
+              I scope the product, drive AI coding tools through the implementation, review everything that
+              comes back, and ship it. Same loop whether it&apos;s a booking platform or an internal dashboard.
+            </p>
+          </ScrollAnimator>
+
+          <div className="capability-grid">
+            {capabilities.slice(0, 4).map(cap => (
+              <ScrollAnimator key={cap.title}>
+                <div className="capability-card">
+                  <div className="capability-icon"><Icon name={cap.icon} size={22} /></div>
+                  <h3>{cap.title}</h3>
+                  <p>{cap.body}</p>
+                </div>
+              </ScrollAnimator>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="max-w-content mx-auto px-6">
+          <ScrollAnimator>
+            <div className="cta-card">
+              <h2>Want one of these for your business?</h2>
+              <p>Tell me the problem and I&apos;ll tell you what it takes to build it.</p>
+              <div className="cta-actions">
+                <a href={`mailto:${profile.email}`} className="btn-primary">Email me</a>
+                <Link href="/resume" className="btn-secondary">View résumé</Link>
+              </div>
+            </div>
+          </ScrollAnimator>
         </div>
       </section>
     </div>
